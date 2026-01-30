@@ -3,7 +3,7 @@ set -e
 
 CLUSTER_NAME="training-cluster"
 
-echo "--- 1. Création de la configuration KIND ---"
+echo "--- 1. Création de la configuration KIND pour automatisation ---"
 cat <<EOF > kind-config.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
