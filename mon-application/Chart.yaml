@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mon-application
+description: Déploiement d’un serveur NGINX avec bouton de validation
+type: application
+version: 0.1.0
+appVersion: "1.26.2"

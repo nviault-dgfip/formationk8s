@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy
+  namespace: mon-application
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      serviceAccountName: nginx-sa
+      containers:
+        - name: nginx
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+            - name: config-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+            - name: status-data
+              mountPath: /data
+        - name: sidecar
+          image: bitnami/kubectl:1.30
+          command: ["/bin/sh", "/scripts/collect-status.sh"]
+          volumeMounts:
+            - name: status-data
+              mountPath: /data
+            - name: config-volume
+              mountPath: /scripts/collect-status.sh
+              subPath: collect-status.sh
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mon-application-config
+        - name: status-data
+          emptyDir: {}

@@ -1,0 +1,13 @@
+replicaCount: 4
+image:
+  repository: nginx
+  tag: "1.26.2"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  nodePort: 30080
+
+trainer:
+  url: "http://<IP_FORMATEUR>:5000/report"
+  timeoutSeconds: 5
