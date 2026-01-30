@@ -6,8 +6,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app: nginx-web
+    app: nginx
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 80
       nodePort: {{ .Values.service.nodePort }}
